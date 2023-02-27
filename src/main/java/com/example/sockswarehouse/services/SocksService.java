@@ -6,13 +6,16 @@ import com.example.sockswarehouse.model.Socks;
 import org.webjars.NotFoundException;
 
 import java.util.Collection;
+import java.util.List;
 
-public  interface SocksService {
+public interface SocksService {
     Socks addSocks(Socks sock);
 
     Socks reduceSocks(Socks sock) throws NotFoundException;
 
-    Socks showSocks(Color color, Size size);
+
+    List<Socks> showSocks(Color color, Size size, Integer fromCottonPart, Integer toCottonPart);
+
 
     Collection<Socks> allSocks();
 }
