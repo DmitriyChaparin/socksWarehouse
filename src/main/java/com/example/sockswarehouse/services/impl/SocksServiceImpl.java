@@ -60,14 +60,18 @@ public class SocksServiceImpl implements SocksService {
     }
 
     @Override
-    public Socks showSocks(Color color, Size size) {
+    public List<Socks> showSocks(Color color, Size size, Integer fromCottonPart, Integer toCottonPart) {
+        List<Socks> socksList = new ArrayList<>();
         for (Socks sck : socks.values()) {
-            if (sck.getColor().equals(color) && sck.getSize().equals(size)) {
-                return sck;
+            if (sck.getColor().equals(color) && sck.getSize().equals(size) && sck.getCottonPart() >= fromCottonPart && sck.getCottonPart() <= toCottonPart) {
+                socksList.add(sck);
             }
         }
-        return null;
+        return socksList;
     }
+
+
+
 
     private void saveToFile() {
         try {

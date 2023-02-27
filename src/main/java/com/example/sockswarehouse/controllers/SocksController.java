@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.Collection;
+import java.util.List;
 
 @RestController
 @Tag(name = "Cклад носков")
@@ -65,9 +66,24 @@ public class SocksController {
         return this.socksService.allSocks();
     }
 
-    @GetMapping("/{цвет},{размер}")
+    @GetMapping("/{цвет},{размер},{хлопокОт},{хлопокДо}")
     @Operation(summary = "Колличество носков")
-    public Socks getSock(@PathVariable Color цвет, @PathVariable Size размер) {
-        return this.socksService.showSocks(цвет,размер);
+    public List<Socks> getSock(@PathVariable Color цвет, @PathVariable Size размер, @PathVariable int хлопокОт, @PathVariable int хлопокДо) {
+        return this.socksService.showSocks(цвет, размер, хлопокОт, хлопокДо);
+    }
+
+    @DeleteMapping
+    @Operation(summary = "Удаление брака")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "брак удалён",
+                    content = {@Content(mediaType = "application/json",
+                            schema = @Schema(implementation = Socks.class))}),
+            @ApiResponse(responseCode = "400", description = "брак не найден",
+                    content = @Content),
+            @ApiResponse(responseCode = "500", description = "произошла ошибка, не зависящая от вызывающей стороны",
+                    content = @Content)})
+    public ResponseEntity<Socks> deleteSocks(@Valid @RequestBody Socks socks) {
+        Socks addSocks = socksService.reduceSocks(socks);
+        return ResponseEntity.ok(addSocks);
     }
 }
